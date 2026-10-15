@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SCORM 1.2-manifest. Fillisten mellom FILER-merkene oppdateres av scripts/pakk-scorm.py -->
+<manifest identifier="no.sykehuset-ostfold.narkontroll.opplaering.konsept-a" version="0.1"
+  xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+  xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                      http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd
+                      http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
+  <organizations default="org-narkontroll">
+    <organization identifier="org-narkontroll">
+      <title>NarKontroll – opplæring (konsept A)</title>
+      <item identifier="item-kurs" identifierref="res-kurs" isvisible="true">
+        <title>NarKontroll – opplæring</title>
+        <!-- Ingen masteryscore: kravet til bestått er ikke avklart (Losningsforslag 8, punkt 4).
+             Med masteryscore kan LMS-et sette passed/failed ut fra score.raw. -->
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="res-kurs" type="webcontent" adlcp:scormtype="sco" href="index.html">
+      <!-- FILER:START -->
+      <file href="index.html"/>
+      <file href="css/app.css"/>
+      <file href="js/app.js"/>
+      <file href="js/scorm.js"/>
+      <file href="js/vendor/qrcode.js"/>
+      <file href="content/koder.js"/>
+      <file href="content/kurs.js"/>
+      <file href="content/skjermer.js"/>
+      <file href="assets/ikon-opplaeringsmodus.svg"/>
+      <file href="assets/logo-mark.svg"/>
+      <file href="assets/video/introfilm.mp4"/>
+      <!-- FILER:SLUTT -->
+    </resource>
+  </resources>
+</manifest>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>NarKontroll – opplæring</title>
+  <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <a class="hopp" href="#app">Hopp til innholdet</a>
+
+  <!-- Ikoner og logomerke. Én strektykkelse (1,8) og runde ender i hele settet. -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="nk-sirkel"><circle cx="50" cy="50" r="41"/></clipPath>
+      <clipPath id="nk-kapsel"><rect x="41.3" y="22.7" width="19.2" height="54.6" rx="9.6"/></clipPath>
+    </defs>
+    <symbol id="nk-mark" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="43" fill="#fff"/>
+      <rect x="0" y="52" width="100" height="50" fill="#79E3E0" clip-path="url(#nk-sirkel)"/>
+      <rect x="41.3" y="22.7" width="19.2" height="54.6" rx="9.6" fill="#fff"/>
+      <path d="M51 40 Q51 34 57 34 H64 V80 H38 V77 Q51 77 51 66 Z" fill="#79E3E0" clip-path="url(#nk-kapsel)"/>
+      <g fill="none" stroke="#186F7B" stroke-linecap="round">
+        <circle cx="50" cy="50" r="43" stroke-width="5.6"/>
+        <rect x="38.6" y="20" width="24.6" height="60" rx="12.3" stroke-width="5.3"/>
+        <path d="M10.8 50 H27.2 M45.6 50 H84" stroke-width="5.3"/>
+      </g>
+    </symbol>
+
+    <!-- Strek og fyll arves fra .ikon i CSS -->
+      <symbol id="i-neste" viewBox="0 0 24 24"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></symbol>
+      <symbol id="i-forrige" viewBox="0 0 24 24"><path d="M19 12H6M11 6.5 5.5 12l5.5 5.5"/></symbol>
+      <symbol id="i-sjekk" viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5"/></symbol>
+      <symbol id="i-kryss" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+      <symbol id="i-skriver" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></symbol>
+      <symbol id="i-liste" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r=".9"/><circle cx="4.5" cy="12" r=".9"/><circle cx="4.5" cy="18" r=".9"/></symbol>
+      <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM14 20.5h1M20.5 14v1"/></symbol>
+      <symbol id="i-bok" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></symbol>
+      <symbol id="i-trykk" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 6.2v.01"/></symbol>
+      <symbol id="i-tall" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M7.5 10v4M10.5 10.5c0-.6.6-.9 1.2-.9s1.3.4 1.3 1c0 1-2.5 1.7-2.5 3.4H13M15.8 10h2l-1.2 1.6c.8 0 1.4.4 1.4 1.1 0 .8-.7 1.3-1.5 1.3-.5 0-1-.2-1.2-.5"/></symbol>
+      <symbol id="i-oye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.9-3.6 3.9-5.6 7.5-5.6s6.6 2 7.5 5.6"/></symbol>
+      <symbol id="i-kort" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 15.5c.6-1.2 1.7-1.8 3-1.8s2.4.6 3 1.8M14 10h4.5M14 13h3"/></symbol>
+      <symbol id="i-nfc" viewBox="0 0 24 24"><path d="M8.5 8.5a5 5 0 0 1 0 7M12 5.5a9 9 0 0 1 0 13M15.5 3a12.5 12.5 0 0 1 0 18"/><circle cx="5" cy="12" r="1"/></symbol>
+      <symbol id="i-bryter" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="10" rx="5"/><circle cx="16.5" cy="12" r="3"/></symbol>
+      <symbol id="i-sporsmal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.7M12 17h.01"/></symbol>
+      <symbol id="i-obs" viewBox="0 0 24 24"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v4.5M12 17.2h.01"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8h.01"/></symbol>
+      <symbol id="i-skjerm" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="12.5" rx="2"/><path d="M8.5 20h7M12 16.5V20"/></symbol>
+      <symbol id="i-verktoy" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6l-.1.1a6 6 0 0 1-7.6.9L7 19.9a2 2 0 0 1-2.9-2.8l6.3-6.4a6 6 0 0 1 1-7.5l.1-.1 1.3 1.3z"/></symbol>
+      <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4.5v4h4"/></symbol>
+      <symbol id="i-hjem" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/></symbol>
+      <symbol id="i-ned" viewBox="0 0 24 24"><path d="M6.5 9.5 12 15l5.5-5.5"/></symbol>
+      <symbol id="i-lukk"viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  </svg>
+
+  <header class="toppfelt">
+    <a class="merke" href="#meny" aria-label="NarKontroll opplæring, gå til hovedmenyen">
+      <svg class="merke-ikon" aria-hidden="true"><use href="#nk-mark"/></svg>
+      <span class="merke-navn">NarKontroll</span>
+      <span class="merke-sub">Opplæring</span>
+    </a>
+
+    <nav class="plassering" aria-label="Du er her">
+      <a class="knapp knapp-sekundar knapp-hjem" href="#meny" id="knapp-hovedmeny">
+        <svg class="ikon" aria-hidden="true"><use href="#i-hjem"/></svg><span>Hovedmeny</span>
+      </a>
+      <p class="plassering-tekst" id="plassering-tekst"></p>
+    </nav>
+
+    <div class="topp-handlinger">
+      <button class="knapp knapp-stille" type="button" id="knapp-qrark">
+        <svg class="ikon" aria-hidden="true"><use href="#i-skriver"/></svg><span>QR-ark</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="smal-varsel" id="smal-varsel" role="note">
+    <svg class="ikon" aria-hidden="true"><use href="#i-skjerm"/></svg>
+    <p><strong>Dette kurset gjøres best på PC.</strong> Mobilen du skanner med, kan ikke skanne sin egen skjerm. Du kan også skrive ut QR-arket.</p>
+    <button class="knapp knapp-sekundar" type="button" data-handling="qrark">Skriv ut QR-ark</button>
+  </div>
+
+  <main id="app" class="scene" tabindex="-1"></main>
+
+  <!-- Introfilmen (4 s, uten lyd) spilles når kurset åpnes. Etterpå kommer hovedmenyen. Styres av visIntro() i app.js -->
+  <dialog id="dlg-intro" class="intro" aria-label="Introfilm">
+    <video class="intro-film" src="assets/video/introfilm.mp4" muted playsinline preload="auto"
+      aria-label="NarKontroll-logoen settes sammen av to kapsler"></video>
+    <button class="knapp intro-hopp" type="button" data-lukk>
+      <span>Hopp over</span><svg class="ikon" aria-hidden="true"><use href="#i-neste"/></svg>
+    </button>
+  </dialog>
+
+  <dialog id="dlg-qrark" class="ark" aria-labelledby="dlg-qrark-tittel">
+    <div class="ark-topp">
+      <h2 id="dlg-qrark-tittel">Skriv ut QR-ark</h2>
+      <button class="knapp-ikon" type="button" data-lukk aria-label="Lukk"><svg class="ikon" aria-hidden="true"><use href="#i-lukk"/></svg></button>
+    </div>
+    <p class="ark-ingress">Et ark per modul med kodene i den rekkefølgen du skanner dem. Kodene skrives ut i ca. 4 × 4 cm.</p>
+    <form id="qrark-skjema" class="qrark-skjema">
+      <fieldset>
+        <legend class="sr">Hva vil du skrive ut?</legend>
+        <label class="valgrad"><input type="radio" name="omfang" value="denne" checked> <span>Denne modulen</span> <span class="valgrad-meta" id="qrark-denne"></span></label>
+        <label class="valgrad"><input type="radio" name="omfang" value="alle"> <span>Alle modulene</span> <span class="valgrad-meta" id="qrark-alle"></span></label>
+      </fieldset>
+      <div class="ark-knapper">
+        <button class="knapp knapp-sekundar" type="button" data-lukk>Avbryt</button>
+        <button class="knapp knapp-primar" type="submit"><svg class="ikon" aria-hidden="true"><use href="#i-skriver"/></svg><span>Skriv ut</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="utskrift" class="utskrift" aria-hidden="true"></div>
+  <div id="dev-rot"></div>
+  <div id="kunngjoring" class="sr" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/vendor/qrcode.js"></script>
+  <script src="js/scorm.js"></script>
+  <script src="content/koder.js"></script>
+  <script src="content/skjermer.js"></script>
+  <script src="content/kurs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
