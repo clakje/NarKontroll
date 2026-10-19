@@ -33,6 +33,13 @@
   };
   var MENYREKKEFOLGE = ["uttak", "tilbakelegge", "overfore", "tilbakefore", "apotek", "kassere", "lan", "kontroll", "oversikt"];
 
+  // Hvor NFC-leseren sitter på telefonen
+  var LESERE = [
+    ["iphone", "iPhone", "Øverst, ved kameraet"],
+    ["samsung", "Samsung Galaxy", "Midt på"],
+    ["pixel", "Google Pixel", "Under kamerastripen"]
+  ];
+
   var STEGTYPER = {
     fortelling: { etikett: "Situasjon",        ikon: "i-bok" },
     registrer:  { etikett: "Beskrivelse",      ikon: "i-trykk" },
@@ -550,13 +557,8 @@
       h += '<p class="sone-tekst">Sjekk at navn og bilde stemmer med personen foran deg.</p>';
     } else {
       // Hvor leseren sitter, forklares én gang (steget har forklar: true). Senere ligger det bak en lenke.
-      var modeller = [
-        ["iphone", "iPhone", "Øverst, ved kameraet"],
-        ["samsung", "Samsung Galaxy", "Midt på"],
-        ["pixel", "Google Pixel", "Under kamerastripen"]
-      ];
       var modellHtml = '<ul class="taepp-modeller">' +
-        modeller.map(function (m) {
+        LESERE.map(function (m) {
           return '<li><span class="taepp-tlf" data-modell="' + m[0] + '" aria-hidden="true"><span class="taepp-kamera"></span></span>' +
             "<b>" + m[1] + "</b><span>" + m[2] + "</span></li>";
         }).join("") +
@@ -800,22 +802,114 @@
     $("#dlg-qrark").showModal();
   }
 
+  // Et ark per modul, satt opp som en tegneserie: situasjonen øverst, så hvert steg i sin egen rute,
+  // med QR-koden i ruta der den skal skannes. Laget for dem som gjør kurset sammen rundt ett ark.
   function skrivUt(omfang) {
     var moduler = omfang === "alle" ? MODULER : [modul()];
-    var html = moduler.filter(function (m) { return koderIModul(m).length; }).map(function (m) {
-      var koder = koderIModul(m);
-      return '<section class="ark-side"><header class="ark-hode"><div><p class="eyebrow">NarKontroll opplæring · QR-ark</p><h1>' +
-        esc(m.eyebrow + ": " + ren(m.tittel)) + "</h1><p>Skann kodene i denne rekkefølgen. Alle kodene er DUMMY-koder for Opplæringsmodus.</p></div>" +
-        '<svg style="width:14mm;height:14mm" aria-hidden="true"><use href="#nk-mark"/></svg></header><div class="ark-rutenett">' +
-        koder.map(function (id, i) {
-          var k = KODER[id];
-          return '<div class="ark-kode"><span class="ark-nr">' + (i + 1) + "</span>" + qrSvg(k.payload) + "<b>" + esc(k.navn) + "</b><span>" + esc(id) + " · DUMMY</span></div>";
-        }).join("") +
-        '</div><p class="ark-fot">Versjon ' + esc(KURS.versjon) + '. Skriv ut i 100 % størrelse (ikke «tilpass til side») for riktig kodestørrelse.</p></section>';
-    }).join("");
-    $("#utskrift").innerHTML = html;
+    $("#utskrift").innerHTML = moduler.filter(function (m) { return koderIModul(m).length; }).map(arkHtml).join("");
     $("#dlg-qrark").close();
     setTimeout(function () { window.print(); }, 50);
+  }
+
+  function arkHtml(m) {
+    var nr = 0, fasit = [], deler = [];
+    var knapp = m.knapp && APPKNAPPER[m.knapp];
+
+    m.steg.forEach(function (st) {
+      if (st.type === "registrer") {
+        deler.push({ html: '<div class="ark-del"><h2>' + fmt(st.tittel || st.tekst) + "</h2>" + (st.tittel && st.tekst ? "<p>" + fmt(st.tekst) + "</p>" : "") +
+          arkPunkter(st.punkter) + (st.tips ? '<p class="ark-tips">' + fmt(st.tips) + "</p>" : "") + "</div>" });
+        (st.rekke || []).forEach(function (r) {
+          var k = r.kode && KODER[r.kode];
+          deler.push({ nr: ++nr, bilde: ruteBilde(r), innhold:
+            (k ? '<p class="rute-navn">' + esc(k.navn) + " <span>" + esc(r.kode) + " · DUMMY</span></p>" : "") +
+            (r.mengde != null ? '<p class="rute-mengde">Mengde <b>' + esc(tall(r.mengde)) + "</b> " + fmt(r.enhet || "") + "</p>" : "") +
+            '<p class="rute-tekst">' + fmt(r.tekst) + "</p>" + (r.merknad ? '<p class="rute-merknad">' + fmt(r.merknad) + "</p>" : "") });
+        });
+      } else if (st.type === "sporsmal") {
+        fasit.push("Steg " + (++nr) + ": " + esc(st.fasit) + ".");
+        deler.push({ nr: nr, etikett: "Snakk sammen", type: st.type, innhold:
+          '<p class="rute-tekst"><strong>' + fmt(st.tekst) + "</strong></p>" +
+          '<ul class="rute-svar">' + st.alternativer.map(function (a) { return "<li>" + fmt(a) + "</li>"; }).join("") + "</ul>" });
+      } else {
+        var signer = st.type === "signer";
+        var p = st.panel && st.panel.type === "fakta" ? st.panel : null;
+        deler.push({ nr: ++nr, etikett: (STEGTYPER[st.type] || STEGTYPER.info).etikett, type: st.type, bredde: p ? 2 : 1,
+          bilde: signer ? kortTegning(st.antall || 1) : "", innhold:
+          (st.tittel ? "<h3>" + fmt(st.tittel) + "</h3>" : "") + '<p class="rute-tekst">' + fmt(st.tekst) + "</p>" + arkPunkter(st.punkter) +
+          (signer && st.forklar ? '<p class="rute-merknad">Leseren sitter: ' + LESERE.map(function (l) { return l[1] + " " + l[2].toLowerCase(); }).join(". ") + ".</p>" : "") +
+          (p ? '<dl class="rute-fakta">' + p.rader.map(function (r) { return "<div><dt>" + fmt(r[0]) + "</dt><dd>" + fmt(r[1]) + "</dd></div>"; }).join("") + "</dl>" : "") +
+          (st.tips ? '<p class="ark-tips">' + fmt(st.tips) + "</p>" : "") });
+      }
+    });
+
+    // Rutene står tre i bredden. Den siste ruta i en ufullstendig rad strekkes ut, så raden ikke får hull
+    var pos = 0, forrige = null;
+    function fyll() { if (pos && forrige) forrige.bredde += 3 - pos; pos = 0; }
+    deler.forEach(function (d) {
+      if (!d.nr) { fyll(); forrige = null; return; }
+      d.bredde = d.bredde || 1;
+      if (pos + d.bredde > 3) fyll();
+      pos = (pos + d.bredde) % 3;
+      forrige = d;
+    });
+    fyll();
+
+    // Hver del får sitt eget rutenett, med overskriften som egen blokk foran. Da kan utskriften
+    // skifte side mellom radene, og overskriften blir stående sammen med første rad
+    var serie = "", apen = false;
+    deler.forEach(function (d) {
+      if (!d.nr) { serie += (apen ? "</div>" : "") + d.html; apen = false; return; }
+      if (!apen) { serie += '<div class="ark-rutenett">'; apen = true; }
+      serie += ruteHtml(d);
+    });
+    if (apen) serie += "</div>";
+
+    return '<section class="ark-side"' + (knapp ? ' style="--f:' + knapp.farge + '"' : "") + ">" +
+      '<header class="ark-hode"><div><p class="eyebrow">NarKontroll opplæring · Case-ark' + (m.utkast ? ' <span class="merkelapp">Utkast, ikke faglig godkjent</span>' : "") + "</p>" +
+      "<h1>" + esc(m.eyebrow + ": " + ren(m.tittel)) + "</h1></div>" +
+      '<svg style="width:14mm;height:14mm" aria-hidden="true"><use href="#nk-mark"/></svg></header>' +
+      '<div class="ark-situasjon">' + (knapp ? appknappHtml(m.knapp) : "") +
+      '<div><p class="ark-etikett">Situasjon</p><p>' + fmt(m.kortTekst) + "</p></div></div>" +
+      '<p class="ark-slik">Les situasjonen høyt. Én gjør stegene i appen og skanner kodene rett fra arket, de andre følger med. Bytt på hvem som skanner.' +
+      "<span>Versjon " + esc(KURS.versjon) + ". Alle kodene er DUMMY-koder for Opplæringsmodus. Skriv ut i 100 % størrelse (ikke «tilpass til side») for riktig kodestørrelse.</span></p>" +
+      serie + (fasit.length ? '<p class="ark-fasit"><b>Fasit</b> ' + fasit.join(" ") + "</p>" : "") + "</section>";
+  }
+
+  // Rute: { nr, etikett?, type?, bilde?, innhold, bredde }. En bred rute har bildet til venstre for teksten
+  function ruteHtml(d) {
+    return '<div class="rute" data-bredde="' + d.bredde + '"' + (d.type ? ' data-type="' + d.type + '"' : "") + ">" +
+      '<p class="rute-nr"><b>Steg ' + d.nr + "</b>" + (d.etikett ? "<span>" + esc(d.etikett) + "</span>" : "") + "</p>" +
+      '<div class="rute-kropp">' + (d.bilde ? '<div class="rute-bilde">' + d.bilde + "</div>" : "") + '<div class="rute-innhold">' + d.innhold + "</div></div></div>";
+  }
+
+  function arkPunkter(punkter) {
+    return punkter ? '<ul class="ark-punkter">' + punkter.map(function (p) { return "<li>" + fmt(p) + "</li>"; }).join("") + "</ul>" : "";
+  }
+
+  // Tegningen i ruta: QR-koden, appknappen som skal trykkes, ID-kortet, eller en telefon med et ikon for handlingen
+  function ruteBilde(r) {
+    var k = r.kode && KODER[r.kode];
+    if (k) return '<div class="rute-qr">' + qrSvg(k.payload) + "</div>";
+    if (/tæpp/i.test(r.tekst)) return kortTegning(1);
+    var trykk = /Trykk på \*\*([^*]+)\*\*/.exec(r.tekst);
+    var knapp = trykk && MENYREKKEFOLGE.filter(function (id) { return APPKNAPPER[id].merke.split(" ")[0] === trykk[1]; })[0];
+    if (knapp) return '<div class="rute-tlf">' + appknappHtml(knapp) + "</div>";
+    var ikonId = /Tell/.test(r.tekst) ? "i-tall" : /Velg|Slå på/.test(r.tekst) ? "i-bryter" : /Se |oppsummering|fanen/.test(r.tekst) ? "i-oye" : "i-trykk";
+    return '<div class="rute-tlf">' + ikon(ikonId) + "</div>";
+  }
+
+  function appknappHtml(id) {
+    var k = APPKNAPPER[id];
+    return '<span class="ark-appknapp" style="--f:' + k.farge + '"' + (id === "kontroll" ? " data-lys" : "") + "><b>" + k.navn + "</b><small>" + k.under.replace(/<br>/g, " · ") + "</small></span>";
+  }
+
+  function kortTegning(antall) {
+    var h = "";
+    for (var i = 0; i < antall; i++) {
+      h += '<span class="ark-kort">' + ikon("i-kort") + ikon("i-nfc") + (antall > 1 ? "<small>Bruker " + (i + 1) + "</small>" : "") + "</span>";
+    }
+    return '<div class="ark-kortrad">' + h + "</div>";
   }
 
   /* ───────────── Utviklermodus ───────────── */

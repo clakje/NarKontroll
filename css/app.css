@@ -952,12 +952,73 @@ body:has(.intro[open]) { overflow: hidden; }
   .ark-hode { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding-bottom: 6mm; margin-bottom: 6mm; border-bottom: 1.5pt solid #186F7B; }
   .ark-hode h1 { font-size: 18pt; color: #0F2B2F; }
   .ark-hode p { font-size: 10pt; color: #4B6367; }
-  .ark-hode .eyebrow { font-size: 9pt; color: #186F7B; }
-  .ark-rutenett { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm 6mm; }
-  .ark-kode { break-inside: avoid; display: flex; flex-direction: column; align-items: center; gap: 2mm; text-align: center; padding: 4mm; border: .75pt solid #B7CDCF; border-radius: 3mm; }
-  .ark-kode svg { width: 40mm; height: 40mm; }
-  .ark-kode b { font-size: 10.5pt; }
-  .ark-kode span { font-size: 8.5pt; color: #4B6367; font-family: var(--mono); }
-  .ark-kode .ark-nr { font-family: var(--font); font-size: 8pt; font-weight: 700; color: #186F7B; }
-  .ark-fot { margin-top: 8mm; font-size: 8.5pt; color: #4B6367; }
+  .ark-hode .eyebrow { font-size: 9pt; color: #186F7B; display: flex; align-items: center; gap: 3mm; }
+  .ark-hode .merkelapp { font-size: 7.5pt; letter-spacing: 0; text-transform: none; }
+
+  /* Case-ark: situasjonen øverst, så stegene som tegneserieruter (tre i bredden) */
+  .utskrift { font-size: 9.5pt; line-height: 1.35; color: #0F2B2F; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .utskrift strong { font-weight: 700; }
+  .utskrift .avklares { font-size: .8em; padding: 0 3pt; }
+  .ark-situasjon { display: flex; align-items: center; gap: 5mm; padding: 4mm 5mm; border: 1.5pt solid #0F2B2F; border-left: 4mm solid var(--f, #186F7B); border-radius: 3mm; background: #E9F5F4; font-size: 11pt; }
+  .ark-etikett { font-size: 8pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #186F7B; }
+  .ark-slik { margin: 2.5mm 0 3mm; font-size: 8.5pt; color: #4B6367; }
+  .ark-rutenett { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; margin-top: 3mm; }
+  .ark-del { break-after: avoid; break-inside: avoid; margin-top: 5mm; }
+  .ark-del h2 { font-size: 12pt; font-weight: 750; }
+  .ark-del > p:not(.ark-tips) { margin-top: 1mm; max-width: 170mm; }
+  .ark-punkter { margin: 1.5mm 0 0; padding-left: 5mm; }
+  .ark-tips { margin-top: 1.5mm; font-size: 8.5pt; color: #4B6367; }
+  .ark-tips::before { content: "Tips: "; font-weight: 700; color: #186F7B; }
+
+  .rute { break-inside: avoid; display: flex; flex-direction: column; border: 1.5pt solid #0F2B2F; border-radius: 3mm; background: #fff; overflow: hidden; }
+  .rute[data-bredde="2"] { grid-column: span 2; }
+  .rute[data-bredde="3"] { grid-column: span 3; }
+  .rute-kropp { flex: 1; display: flex; flex-direction: column; }
+  .rute-innhold { display: flex; flex-direction: column; gap: 1.8mm; padding: 2.5mm 3.5mm 3.5mm; }
+  .rute:not([data-bredde="1"]) .rute-kropp { flex-direction: row; }
+  .rute:not([data-bredde="1"]) .rute-bilde { flex: none; width: 56mm; height: auto; min-height: 30mm; border-bottom: 0; border-right: .75pt solid #CFE7E6; }
+  .rute:not([data-bredde="1"]) .rute-innhold { flex: 1; justify-content: center; }
+  .rute-nr { display: flex; justify-content: space-between; gap: 2mm; padding: 1.2mm 3.5mm; background: #0F2B2F; color: #fff; font-size: 8.5pt; letter-spacing: .04em; text-transform: uppercase; }
+  .rute-nr span { font-weight: 600; color: #79E3E0; }
+  .rute[data-type="sporsmal"] .rute-nr { background: #186F7B; }
+  .rute[data-type="sporsmal"] .rute-nr span { color: #fff; }
+  .rute[data-type="obs"] { border-color: #8A5A00; background: #FFF4D6; }
+  .rute[data-type="obs"] .rute-nr { background: #8A5A00; }
+  .rute[data-type="obs"] .rute-nr span { color: #FFF4D6; }
+  .rute h3 { font-size: 10.5pt; font-weight: 750; line-height: 1.25; }
+  .rute-bilde { display: flex; justify-content: center; align-items: center; height: 28mm; background: #E9F5F4; border-bottom: .75pt solid #CFE7E6; }
+  .rute-qr { padding: 1mm; background: #fff; border-radius: 1.5mm; }
+  .rute-qr svg { display: block; width: 25mm; height: 25mm; }
+  .rute-tlf { display: flex; align-items: center; justify-content: center; width: 18mm; height: 25mm; border: 1.2pt solid #0F2B2F; border-radius: 3mm; background: #fff; }
+  .rute-tlf > .ikon { width: 10mm; height: 10mm; color: #186F7B; }
+  .rute-tlf:has(.ark-appknapp) { width: 32mm; }
+  .ark-appknapp { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2mm 2.5mm; border-radius: 1.5mm; background: var(--f); color: #fff; text-align: center; line-height: 1.15; }
+  .ark-appknapp[data-lys] { color: #0F2B2F; }
+  .ark-appknapp b { font-size: 9pt; font-weight: 800; }
+  .ark-appknapp small { font-size: 6.5pt; }
+  .rute-tlf .ark-appknapp { width: 27mm; min-height: 12mm; }
+  .ark-situasjon .ark-appknapp { flex: none; width: 34mm; min-height: 15mm; }
+  .ark-situasjon .ark-appknapp b { font-size: 10.5pt; }
+  .ark-kortrad { display: flex; gap: 4mm; }
+  .ark-kort { position: relative; display: flex; flex-direction: column; align-items: center; gap: .5mm; color: #0F2B2F; }
+  .ark-kort .ikon { stroke-width: 1.4; }
+  .ark-kort .ikon:first-child { width: 20mm; height: 20mm; }
+  .ark-kort .ikon + .ikon { position: absolute; top: -1mm; right: -5mm; width: 7mm; height: 7mm; color: #186F7B; stroke-width: 2; }
+  .ark-kort small { font-size: 7.5pt; font-weight: 700; }
+  .rute-navn { font-weight: 700; font-size: 9pt; line-height: 1.25; }
+  .rute-navn span { display: block; font-weight: 400; font-size: 7.5pt; color: #4B6367; font-family: var(--mono); }
+  .rute-mengde { align-self: flex-start; padding: .8mm 2.5mm; border: 1pt solid #186F7B; border-radius: 1.5mm; font-size: 8.5pt; color: #4B6367; }
+  .rute-mengde b { font-size: 12pt; color: #0F2B2F; }
+  .rute-merknad { font-size: 8pt; color: #4B6367; padding-top: 1.5mm; border-top: .75pt dashed #B7CDCF; }
+  .rute-svar { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1.5mm; }
+  .rute-svar li { display: flex; gap: 2mm; }
+  .rute-svar li::before { content: ""; flex: none; width: 3.2mm; height: 3.2mm; margin-top: .4mm; border: 1pt solid #0F2B2F; border-radius: .8mm; }
+  .rute-fakta { margin: 0; display: grid; gap: 1.2mm; font-size: 8.5pt; }
+  .rute-fakta div { display: grid; grid-template-columns: 28mm 1fr; gap: 2mm; padding-top: 1.2mm; border-top: .75pt solid #CFE7E6; }
+  .rute-fakta dt { font-weight: 700; }
+  .rute-fakta dd { margin: 0; }
+  .ark-slik span { display: block; font-size: 7.5pt; }
+  /* Fasiten står opp ned nederst, så ingen ser den før gruppen har snakket sammen */
+  .ark-fasit { break-inside: avoid; width: fit-content; max-width: 90mm; margin: 5mm 0 0 auto; padding: 2mm 3mm; border: .75pt dashed #B7CDCF; border-radius: 2mm; font-size: 8pt; color: #4B6367; transform: rotate(180deg); }
+  .ark-fasit b { color: #186F7B; }
 }

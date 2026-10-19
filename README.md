@@ -105,6 +105,12 @@ Designet er laget med skillen `apple-design` (HIG som grunnlag, WCAG 2.1 AA som 
   har slått av animasjoner (redusert bevegelse), fordi fagekspertene vil ha den på PC. Den vises ikke i
   utviklermodus.
 - **Smal skjerm:** én kolonne, og kurset forklarer at det gjøres best på PC, med knapp til QR-arket.
+- **QR-ark (case-ark):** knappen «QR-ark» skriver ut ett A4-ark per modul med koder, satt opp som en tegneserie
+  for dem som gjør kurset sammen. Øverst står situasjonen med appknappen i appens farge. Deretter kommer hvert steg
+  i en egen rute («Steg 1», «Steg 2» …), tre i bredden. Rutene har QR-koden, mengden eller en enkel tegning
+  (appknappen, ID-kortet eller telefonen). Kontrollspørsmålene blir ruter med «Snakk sammen» og avkrysningsbokser,
+  og fasiten står opp ned nederst på arket. Den siste ruta i en ufullstendig rad strekkes ut, med bildet til venstre.
+  Alt hentes fra `kurs.js` (`arkHtml()` i `app.js`). Case 1–5 og 8 fyller to sider.
 
 ## Åpne punkter som påvirker dette konseptet
 
